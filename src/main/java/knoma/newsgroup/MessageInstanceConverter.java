@@ -21,7 +21,7 @@ public class MessageInstanceConverter {
 
         IntStream.range(1, vector.size()).forEach(i -> {
             Attribute attribute = (Attribute) vector.elementAt(i);
-            instance.setValue(attribute, tokenizedMessage.getTokens().contains(attribute.name()) ? 1 : 0);
+            instance.setValue(attribute, tokenizedMessage.getTokens().contains(attribute.name()) ? "true" : "false");
         });
 
         return instance;

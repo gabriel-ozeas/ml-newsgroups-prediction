@@ -73,10 +73,15 @@ public class ApplicationStarter {
 
         logger.info("Founded {} words for vocabulary.", bagOfWords.getVocabulary().size());
 
+        final FastVector v = new FastVector(2);
+        v.addElement("true");
+        v.addElement("false");
+
         bagOfWords
                 .getVocabulary()
                 .stream()
-                .map(word -> new Attribute(word))
+                .skip(100)
+                .map(word -> new Attribute(word, v))
                 .forEach(attribute -> vector.addElement(attribute));
 
         int trainingSetSize = (int) (messages.size() * 0.7);

@@ -29,7 +29,7 @@ public class MessageDataCleaner {
                 .replaceAll("[_0-9]+", "NUM")
                 .replaceAll(" [a-z] ", " ");
 
-        text = stopwords.stream().reduce(text, (t, word) -> t.replace(" " + word + " ", " "));
+        // text = stopwords.stream().reduce(text, (t, word) -> t.replace(" " + word + " ", " "));
 
         List<String> tokens = asList(text.split(" "))
                 .stream()
