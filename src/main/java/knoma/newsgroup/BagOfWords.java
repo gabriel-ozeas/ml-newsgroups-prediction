@@ -12,16 +12,26 @@ public class BagOfWords {
     private Map<String,Integer> map;
     private int size;
 
+    private List<String> vocabulary;
+
     public BagOfWords(int size) {
         map = new HashMap<>();
         this.size = size;
     }
 
     public List<String> getVocabulary() {
-        List<Map.Entry<String, Integer>> list = new LinkedList(map.entrySet());
-        sort(list, (o1, o2) -> ((Comparable) o2.getValue()).compareTo(o1.getValue()));
+        if (vocabulary == null) {
+            List<Map.Entry<String, Integer>> list = new LinkedList(map.entrySet());
+            sort(list, (o1, o2) -> ((Comparable) o2.getValue()).compareTo(o1.getValue()));
 
-        return list.stream().limit(size).map(item -> item.getKey()).collect(toList());
+            vocabulary = list
+                    .stream()
+                    .skip(300)
+                    .limit(size)
+                    .map(item -> item.getKey()).collect(toList());
+        }
+
+        return vocabulary;
     }
 
     public void count(String word) {

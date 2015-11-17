@@ -2,6 +2,7 @@ package knoma.newsgroup;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -50,11 +51,12 @@ public class ApplicationStarter {
                 .filter(message -> message != null)
                 .parallel()
                 .map(message -> cleaner.clean(message))
+                .limit(17000)
                 .collect(toList());
 
         Collections.shuffle(messages);
 
-        BagOfWords bagOfWords = new BagOfWords(5000);
+        BagOfWords bagOfWords = new BagOfWords(10000);
 
         logger.info("Founded {} messages.", messages.size());
 
@@ -63,7 +65,7 @@ public class ApplicationStarter {
         FastVector categoryVector = new FastVector(20);
         groups.stream().forEach(group -> categoryVector.addElement(group.getName()));
 
-        Attribute newsgroup = new Attribute("newsgroup-class", categoryVector);
+        Attribute newsgroup = new Attribute("@@class@@", categoryVector);
         vector.addElement(newsgroup);
 
         logger.info("Extracting vocabulary...");
@@ -73,18 +75,15 @@ public class ApplicationStarter {
 
         logger.info("Founded {} words for vocabulary.", bagOfWords.getVocabulary().size());
 
-        final FastVector v = new FastVector(2);
-        v.addElement("true");
-        v.addElement("false");
-
         bagOfWords
                 .getVocabulary()
                 .stream()
-                .skip(100)
-                .map(word -> new Attribute(word, v))
+                .map(word -> new Attribute(word))
                 .forEach(attribute -> vector.addElement(attribute));
 
-        int trainingSetSize = (int) (messages.size() * 0.7);
+        logger.info("Vocabolary: " + bagOfWords.getVocabulary().toString());
+
+        int trainingSetSize = (int) (messages.size() * 0.6);
         int testingSetSize = messages.size() - trainingSetSize;
 
         logger.info("The dataset will be splitted in {} trainning instances and {} test instances", trainingSetSize, testingSetSize);
@@ -95,10 +94,30 @@ public class ApplicationStarter {
         logger.info("Extracting training instances...");
 
         IntStream.range(0, trainingSetSize).parallel().forEach(i -> {
-            trainingInstances.add(instanceConverter.convert(messages.get(i), vector));
+            trainingInstances.add(instanceConverter.convert(messages.get(i), bagOfWords, categoryVector));
         });
 
         logger.info("Starting naive bayes classifier training....");
+
+//        int folds = 10;
+//
+//        Random rand = new Random();
+//        trainingInstances.randomize(rand);
+//        trainingInstances.stratify(10);
+//
+//        for (int n = 0; n < folds; n++) {
+//            Instances train = trainingInstances.trainCV(folds, n);
+//            Instances test = trainingInstances.testCV(folds, n);
+//
+//            NaiveBayes classifier = new NaiveBayes();
+//            classifier.buildClassifier(train);
+//
+//            Evaluation eval = new Evaluation(test);
+//
+//            eval.evaluateModel(classifier, test);
+//            logger.info(eval.toSummaryString("\nFold " + n + ", results\n======\n", false));
+//        }
+
 
         NaiveBayes classifier = new NaiveBayes();
         classifier.buildClassifier(trainingInstances);
@@ -111,7 +130,7 @@ public class ApplicationStarter {
         logger.info("Extracting testing instances...");
 
         IntStream.range(trainingSetSize, messages.size()).parallel().forEach(i -> {
-            testingInstances.add(new MessageInstanceConverter().convert(messages.get(i), vector));
+            testingInstances.add(new MessageInstanceConverter().convert(messages.get(i), bagOfWords, categoryVector));
         });
 
         logger.info("Starting classifier evaluation....");

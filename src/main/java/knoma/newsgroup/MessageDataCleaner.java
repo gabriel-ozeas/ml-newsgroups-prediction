@@ -26,10 +26,10 @@ public class MessageDataCleaner {
                 .replaceAll("/\\(?([0-9]{3})\\)?([ .-]?)([0-9]{3})\\2([0-9]{4})/", "PHONE")
                 .replaceAll(" [0-9]{5}(?:-[0-9]{4})? ", "ZIPCODE")
                 .replaceAll("[^\\w\\s]", " ")
-                .replaceAll("[_0-9]+", "NUM")
+                .replaceAll("[_0-9]+", " ")
                 .replaceAll(" [a-z] ", " ");
 
-        // text = stopwords.stream().reduce(text, (t, word) -> t.replace(" " + word + " ", " "));
+        text = stopwords.stream().reduce(text, (t, word) -> t.replace(" " + word + " ", " "));
 
         List<String> tokens = asList(text.split(" "))
                 .stream()
