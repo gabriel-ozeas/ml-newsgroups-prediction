@@ -1,5 +1,8 @@
-package knoma.newsgroup;
+package knoma.newsgroup.preprocessing;
 
+
+import knoma.newsgroup.domain.Group;
+import knoma.newsgroup.domain.Message;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.HashMap;

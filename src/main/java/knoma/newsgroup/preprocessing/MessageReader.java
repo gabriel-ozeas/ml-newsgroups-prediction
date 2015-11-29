@@ -1,5 +1,8 @@
-package knoma.newsgroup;
+package knoma.newsgroup.preprocessing;
 
+
+import knoma.newsgroup.domain.Group;
+import knoma.newsgroup.domain.Message;
 
 import java.io.File;
 import java.util.List;

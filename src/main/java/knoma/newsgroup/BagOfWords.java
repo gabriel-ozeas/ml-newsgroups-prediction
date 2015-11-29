@@ -39,4 +39,11 @@ public class BagOfWords {
         map.computeIfPresent(word, (w, number) -> number + 1);
     }
 
+    public int sizeOfAll() {
+        return map.size();
+    }
+
+    public int limit() {
+        return size;
+    }
 }

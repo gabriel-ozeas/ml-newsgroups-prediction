@@ -1,6 +1,8 @@
-package knoma.newsgroup;
+package knoma.newsgroup.preprocessing;
 
-import weka.core.Attribute;
+import knoma.newsgroup.BagOfWords;
+import knoma.newsgroup.domain.Message;
+import knoma.newsgroup.domain.TokenizedMessage;
 import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.SparseInstance;
@@ -8,7 +10,6 @@ import weka.core.SparseInstance;
 import javax.enterprise.context.ApplicationScoped;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import static java.util.Arrays.sort;
 import static java.util.stream.Collectors.toList;
@@ -29,6 +30,10 @@ public class MessageInstanceConverter {
                 .filter(word -> vocabulary.contains(word))
                 .distinct()
                 .collect(toList());
+
+        if (words.isEmpty() || message.getGroup() == null) {
+            return null;
+        }
 
         double[] values = new double[words.size() + 1];
         int[] indexes = new int[words.size() + 1];

@@ -1,6 +1,7 @@
 package knoma.newsgroup;
 
 import org.jboss.weld.environment.se.StartMain;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -10,5 +11,6 @@ public class CDIStarterTest {
     @Test
     public void testName() throws Exception {
         StartMain.main(new String[]{});
+        while(true){Thread.sleep(1000);}
     }
 }

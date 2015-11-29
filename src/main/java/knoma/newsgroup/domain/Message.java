@@ -1,4 +1,4 @@
-package knoma.newsgroup;
+package knoma.newsgroup.domain;
 
 import java.util.Map;
 

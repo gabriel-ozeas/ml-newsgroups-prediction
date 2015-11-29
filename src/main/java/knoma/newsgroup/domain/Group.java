@@ -1,4 +1,4 @@
-package knoma.newsgroup;
+package knoma.newsgroup.domain;
 
 /**
  * Created by gabriel on 03/11/15.

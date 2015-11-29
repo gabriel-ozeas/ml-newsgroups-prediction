@@ -1,4 +1,6 @@
-package knoma.newsgroup;
+package knoma.newsgroup.preprocessing;
+
+import knoma.newsgroup.domain.Group;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.io.File;

@@ -1,4 +1,9 @@
-package knoma.newsgroup;
+package knoma.newsgroup.preprocessing;
+
+import knoma.newsgroup.domain.Message;
+import knoma.newsgroup.StopWords;
+import knoma.newsgroup.domain.TokenizedMessage;
+import weka.core.stemmers.LovinsStemmer;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -31,10 +36,13 @@ public class MessageDataCleaner {
 
         text = stopwords.stream().reduce(text, (t, word) -> t.replace(" " + word + " ", " "));
 
+        LovinsStemmer stemmer = new LovinsStemmer();
+
         List<String> tokens = asList(text.split(" "))
                 .stream()
                 .map(word -> word.trim())
                 .filter(word -> !"".equals(word))
+                .map(word -> stemmer.stem(word))
                 .collect(toList());
 
         return new TokenizedMessage(tokens, message);

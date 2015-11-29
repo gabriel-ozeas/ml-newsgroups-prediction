@@ -1,5 +1,7 @@
 package knoma.newsgroup;
 
+import knoma.newsgroup.domain.Message;
+import knoma.newsgroup.preprocessing.MessageParser;
 import org.junit.Assert;
 import org.junit.Test;
 
