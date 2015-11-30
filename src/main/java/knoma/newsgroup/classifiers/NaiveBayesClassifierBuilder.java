@@ -19,8 +19,10 @@ import weka.gui.visualize.ThresholdVisualizePanel;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import java.awt.*;
+import java.util.List;
 import java.util.stream.IntStream;
 
+import static java.util.stream.Collectors.toList;
 import static weka.core.Utils.doubleToString;
 
 /**
@@ -67,30 +69,26 @@ public class NaiveBayesClassifierBuilder implements ClassifierBuilder {
 
         logger.info("Vocabolary: " + bagOfWords.getVocabulary().toString());
 
-        int trainingSetSize = (int) (scenario.getMessages().size() * 0.7);
-        int testingSetSize = scenario.getMessages().size() - trainingSetSize;
+        List<weka.core.Instance> collect = scenario.getMessages()
+                .stream()
+                .map(message -> instanceConverter.convert(message, bagOfWords, categoryVector))
+                .filter(instance -> instance != null)
+                .collect(toList());
+
+        int trainingSetSize = (int) (collect.size() * 0.7);
+        int testingSetSize = collect.size() - trainingSetSize;
 
         logger.info("The dataset will be splitted in {} trainning instances and {} test instances", trainingSetSize, testingSetSize);
 
-        Instances trainingInstances = new Instances("Groups", vector, trainingSetSize);
-        trainingInstances.setClassIndex(0);
-
         logger.info("Extracting training instances...");
-        IntStream.range(0, trainingSetSize)
-                .mapToObj(i -> scenario.getMessages().get(i))
-                .map(message -> instanceConverter.convert(message, bagOfWords, categoryVector))
-                .filter(instance -> instance != null)
-                .forEach(instance -> trainingInstances.add(instance));
-
-        Instances testingInstances = new Instances("@@class@@", vector, testingSetSize);
-        testingInstances.setClassIndex(0);
+        Instances trainingInstances = new Instances("@@class@@", vector, trainingSetSize);
+        trainingInstances.setClassIndex(0);
+        IntStream.range(0, trainingSetSize).forEach(i -> trainingInstances.add(collect.get(i)));
 
         logger.info("Extracting testing instances...");
-        IntStream.range(trainingSetSize, scenario.getMessages().size())
-                .mapToObj(i -> scenario.getMessages().get(i))
-                .map(message -> instanceConverter.convert(message, bagOfWords, categoryVector))
-                .filter(instance -> instance != null)
-                .forEach(instance -> testingInstances.add(instance));
+        Instances testingInstances = new Instances("@@class@@", vector, testingSetSize);
+        testingInstances.setClassIndex(0);
+        IntStream.range(trainingSetSize, collect.size()).forEach(i -> testingInstances.add(collect.get(i)));
 
         NaiveBayes naiveBayesClassifier = new NaiveBayes();
         naiveBayesClassifier.setUseSupervisedDiscretization(true);
@@ -103,10 +101,9 @@ public class NaiveBayesClassifierBuilder implements ClassifierBuilder {
         logger.info("Starting " + naiveBayesClassifier.getClass().getSimpleName() + " classifier evaluation....");
 
         Evaluation evaluation = new Evaluation(trainingInstances);
-        //evaluation.crossValidateModel(naiveBayesClassifier, trainingInstances, 10, new Random(1));
         evaluation.evaluateModel(naiveBayesClassifier, testingInstances);
 
-        graph(evaluation);
+        //graph(evaluation);
 
         logger.info(evaluation.toSummaryString("\nResults\n======\n", false));
         logger.info(evaluation.toMatrixString());

@@ -1,8 +1,11 @@
 package knoma.newsgroup;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import knoma.newsgroup.classifiers.ClassifierBuilder;
+import knoma.newsgroup.experiments.RunnableExperiment;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,6 +20,7 @@ import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import static knoma.newsgroup.classifiers.ClassifierLiteral.classifierType;
+import static knoma.newsgroup.experiments.ExperimentLiteral.experimentType;
 
 /**
  * Created by gabriel on 01/11/15.
@@ -27,7 +31,7 @@ public class ApplicationStarter {
 
     @Inject
     @Any
-    private Instance<ClassifierBuilder> classifierBuilder;
+    private Instance<RunnableExperiment> experiments;
 
     @Inject
     private Options cliOptions;
@@ -42,12 +46,16 @@ public class ApplicationStarter {
             return;
         }
 
-        String classifier = commandLine.hasOption("classifier") ? commandLine.getOptionValue("classifier") : "naive-bayes";
+        if (!commandLine.hasOption("experiment")) {
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp( "20newsgroup -experiment find-best-number-of-attributes", cliOptions);
+            return;
+        }
 
-        ClassifierBuilder builder = classifierBuilder
-                    .select(classifierType(classifier))
-                    .get();
-
-        builder.buildAndEvaluate(100);
+        RunnableExperiment runnableExperiment = experiments.select(experimentType(commandLine.getOptionValue("experiment"))).get();
+        if (runnableExperiment == null) {
+            logger.info("No experiment found with name " + commandLine.getOptionValue("experiment"));
+        }
+        runnableExperiment.run();
     }
 }

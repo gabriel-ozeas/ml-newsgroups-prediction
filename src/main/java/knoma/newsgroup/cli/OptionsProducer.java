@@ -14,7 +14,7 @@ public class OptionsProducer {
     public Options commandLineInterfaceOptions() {
         Options options = new Options();
         options.addOption("dataset", true, "Specify the 20 newsgroup dataset path");
-        options.addOption("classifiers", true, "List the classifiers that will be used");
+        options.addOption("experiment", true, "Name of the experiment that will be run");
         options.addOption("help", "Print this message");
         return options;
     }

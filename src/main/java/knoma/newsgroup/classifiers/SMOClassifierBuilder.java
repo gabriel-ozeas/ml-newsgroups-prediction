@@ -8,36 +8,37 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayes;
-import weka.classifiers.bayes.NaiveBayesMultinomial;
 import weka.classifiers.evaluation.ThresholdCurve;
+import weka.classifiers.functions.SMO;
+import weka.classifiers.functions.supportVector.RBFKernel;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instances;
-import weka.core.Utils;
 import weka.gui.visualize.PlotData2D;
 import weka.gui.visualize.ThresholdVisualizePanel;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import java.awt.*;
-import java.util.*;
+import java.util.List;
 import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toList;
 import static weka.core.Utils.doubleToString;
 
 /**
- * Created by gabriel on 25/11/15.
+ * Created by gabriel on 29/11/15.
  */
-@Classifier("naive-bayes-multinomial")
-public class NaiveBayesMultinomialClassifierBuilder implements ClassifierBuilder {
-    private static final Logger logger = LogManager.getLogger(NaiveBayesMultinomialClassifierBuilder.class.getName());
+@Classifier("smo")
+public class SMOClassifierBuilder implements ClassifierBuilder  {
+    private static final Logger logger = LogManager.getLogger(NaiveBayesClassifierBuilder.class.getName());
 
     @Inject
     private Instance<NewsgroupScenario> scenarioInstance;
 
     @Inject
     private MessageInstanceConverter instanceConverter;
+
 
     public void buildAndEvaluate(int numberOfWords) throws Exception {
         NewsgroupScenario scenario = scenarioInstance.get();
@@ -69,7 +70,7 @@ public class NaiveBayesMultinomialClassifierBuilder implements ClassifierBuilder
 
         logger.info("Vocabolary: " + bagOfWords.getVocabulary().toString());
 
-        java.util.List<weka.core.Instance> collect = scenario.getMessages()
+        List<weka.core.Instance> collect = scenario.getMessages()
                 .stream()
                 .map(message -> instanceConverter.convert(message, bagOfWords, categoryVector))
                 .filter(instance -> instance != null)
@@ -90,7 +91,8 @@ public class NaiveBayesMultinomialClassifierBuilder implements ClassifierBuilder
         testingInstances.setClassIndex(0);
         IntStream.range(trainingSetSize, collect.size()).forEach(i -> testingInstances.add(collect.get(i)));
 
-        NaiveBayesMultinomial classifier = new NaiveBayesMultinomial();
+        SMO classifier = new SMO();
+        classifier.setKernel(new RBFKernel());
         classifier.buildClassifier(trainingInstances);
 
         logger.info("Starting " + classifier.getClass().getSimpleName() + " classifier training....");
