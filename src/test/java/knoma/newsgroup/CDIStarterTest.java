@@ -10,7 +10,7 @@ import org.junit.Test;
 public class CDIStarterTest {
     @Test
     public void testName() throws Exception {
-        StartMain.main(new String[]{"-experiment", "run-knn"});
+        StartMain.main(new String[]{"-experiment", "run-adaboost"});
         while(true){Thread.sleep(1000);}
     }
 }
