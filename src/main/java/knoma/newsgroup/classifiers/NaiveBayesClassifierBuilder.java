@@ -1,6 +1,6 @@
 package knoma.newsgroup.classifiers;
 
-import knoma.newsgroup.BagOfWords;
+import knoma.newsgroup.domain.BagOfWords;
 import knoma.newsgroup.preprocessing.MessageInstanceConverter;
 import knoma.newsgroup.domain.NewsgroupScenario;
 import knoma.newsgroup.domain.TokenizedMessage;
@@ -12,7 +12,6 @@ import weka.classifiers.evaluation.ThresholdCurve;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instances;
-import weka.core.Utils;
 import weka.gui.visualize.PlotData2D;
 import weka.gui.visualize.ThresholdVisualizePanel;
 
@@ -39,7 +38,7 @@ public class NaiveBayesClassifierBuilder implements ClassifierBuilder {
     private MessageInstanceConverter instanceConverter;
 
 
-    public void buildAndEvaluate(int numberOfWords) throws Exception {
+    public void build(int numberOfWords) throws Exception {
         NewsgroupScenario scenario = scenarioInstance.get();
 
         BagOfWords bagOfWords = new BagOfWords(numberOfWords);

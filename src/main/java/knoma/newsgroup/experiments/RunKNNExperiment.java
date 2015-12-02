@@ -23,7 +23,7 @@ public class RunKNNExperiment implements RunnableExperiment {
                 .select(classifierType("knn"))
                 .get();
         try {
-            builder.buildAndEvaluate(2500);
+            builder.build(2500);
         } catch (Exception e) {
             e.printStackTrace();
         }

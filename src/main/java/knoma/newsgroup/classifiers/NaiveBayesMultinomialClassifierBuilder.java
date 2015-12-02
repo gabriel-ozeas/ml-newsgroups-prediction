@@ -1,26 +1,23 @@
 package knoma.newsgroup.classifiers;
 
-import knoma.newsgroup.BagOfWords;
+import knoma.newsgroup.domain.BagOfWords;
 import knoma.newsgroup.domain.NewsgroupScenario;
 import knoma.newsgroup.domain.TokenizedMessage;
 import knoma.newsgroup.preprocessing.MessageInstanceConverter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import weka.classifiers.Evaluation;
-import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.bayes.NaiveBayesMultinomial;
 import weka.classifiers.evaluation.ThresholdCurve;
 import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instances;
-import weka.core.Utils;
 import weka.gui.visualize.PlotData2D;
 import weka.gui.visualize.ThresholdVisualizePanel;
 
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import java.awt.*;
-import java.util.*;
 import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toList;
@@ -39,7 +36,7 @@ public class NaiveBayesMultinomialClassifierBuilder implements ClassifierBuilder
     @Inject
     private MessageInstanceConverter instanceConverter;
 
-    public void buildAndEvaluate(int numberOfWords) throws Exception {
+    public void build(int numberOfWords) throws Exception {
         NewsgroupScenario scenario = scenarioInstance.get();
 
         BagOfWords bagOfWords = new BagOfWords(numberOfWords);

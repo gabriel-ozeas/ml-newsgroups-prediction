@@ -7,8 +7,7 @@ version = '1.0'
 mainClassName = "org.jboss.weld.environment.se.StartMain"
 
 repositories {
-    mavenCentral()
-    mavenLocal()
+    jcenter()
 }
 
 sourceSets {

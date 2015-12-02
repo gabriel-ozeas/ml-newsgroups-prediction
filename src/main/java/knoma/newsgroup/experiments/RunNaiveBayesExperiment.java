@@ -23,7 +23,7 @@ public class RunNaiveBayesExperiment implements RunnableExperiment {
                 .select(classifierType("naive-bayes"))
                 .get();
         try {
-            builder.buildAndEvaluate(20000);
+            builder.build(20000);
         } catch (Exception e) {
             e.printStackTrace();
         }

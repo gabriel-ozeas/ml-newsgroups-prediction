@@ -24,7 +24,7 @@ public class RunNaiveBayesMultinomialExperiment implements RunnableExperiment {
                 .select(classifierType("naive-bayes-multinomial"))
                 .get();
         try {
-            builder.buildAndEvaluate(20000);
+            builder.build(20000);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -23,7 +23,7 @@ public class RunDecisionTreeExperiment implements RunnableExperiment {
                 .select(classifierType("j48"))
                 .get();
         try {
-            builder.buildAndEvaluate(20000);
+            builder.build(20000);
         } catch (Exception e) {
             e.printStackTrace();
         }

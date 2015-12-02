@@ -1,6 +1,6 @@
 package knoma.newsgroup.preprocessing;
 
-import knoma.newsgroup.BagOfWords;
+import knoma.newsgroup.domain.BagOfWords;
 import knoma.newsgroup.domain.Message;
 import knoma.newsgroup.domain.TokenizedMessage;
 import weka.core.FastVector;
@@ -8,7 +8,6 @@ import weka.core.Instance;
 import weka.core.SparseInstance;
 
 import javax.enterprise.context.ApplicationScoped;
-import java.util.Arrays;
 import java.util.List;
 
 import static java.util.Arrays.sort;
@@ -19,6 +18,15 @@ import static java.util.stream.Collectors.toList;
  */
 @ApplicationScoped
 public class MessageInstanceConverter {
+
+    public List<Instance> convert(List<Message> messages, BagOfWords bagOfWords, FastVector categoryVector) {
+        return messages
+                .stream()
+                .map(message -> convert(message, bagOfWords, categoryVector))
+                .filter(instance -> instance != null)
+                .collect(toList());
+    }
+
     public Instance convert(Message message, BagOfWords bagOfWords, FastVector categoryVector) {
         TokenizedMessage tokenizedMessage = (TokenizedMessage) message;
 
@@ -49,8 +57,6 @@ public class MessageInstanceConverter {
 
         sort(indexes);
 
-        SparseInstance instance = new SparseInstance(1, values, indexes, values.length);
-
-        return instance;
+        return new SparseInstance(1, values, indexes, values.length);
     }
 }

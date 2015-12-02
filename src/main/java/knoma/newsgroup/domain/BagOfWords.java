@@ -1,4 +1,4 @@
-package knoma.newsgroup;
+package knoma.newsgroup.domain;
 
 import java.util.*;
 
@@ -45,5 +45,13 @@ public class BagOfWords {
 
     public int limit() {
         return size;
+    }
+
+    public static BagOfWords wordsFromMessages(List<Message> messages, int size) {
+        BagOfWords bagOfWords = new BagOfWords(size);
+        messages.stream()
+                .flatMap(message -> ((TokenizedMessage) message).getTokens().stream())
+                .forEach(word -> bagOfWords.count(word));
+        return bagOfWords;
     }
 }

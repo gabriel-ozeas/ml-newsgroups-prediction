@@ -32,7 +32,7 @@ public class FindBestNumberOfAttributesExperiment implements RunnableExperiment 
                             .select(classifierType("naive-bayes-multinomial"))
                             .get();
                     try {
-                        builder.buildAndEvaluate(i);
+                        builder.build(i);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -46,7 +46,7 @@ public class FindBestNumberOfAttributesExperiment implements RunnableExperiment 
                             .select(classifierType("naive-bayes"))
                             .get();
                     try {
-                        builder.buildAndEvaluate(i);
+                        builder.build(i);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

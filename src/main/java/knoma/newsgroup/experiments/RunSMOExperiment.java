@@ -23,7 +23,7 @@ public class RunSMOExperiment implements RunnableExperiment {
                 .select(classifierType("smo"))
                 .get();
         try {
-            builder.buildAndEvaluate(20000);
+            builder.build(20000);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,13 +1,12 @@
 package knoma.newsgroup.classifiers;
 
-import knoma.newsgroup.BagOfWords;
+import knoma.newsgroup.domain.BagOfWords;
 import knoma.newsgroup.domain.NewsgroupScenario;
 import knoma.newsgroup.domain.TokenizedMessage;
 import knoma.newsgroup.preprocessing.MessageInstanceConverter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import weka.classifiers.Evaluation;
-import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.evaluation.ThresholdCurve;
 import weka.classifiers.functions.SMO;
 import weka.classifiers.functions.supportVector.RBFKernel;
@@ -40,7 +39,7 @@ public class SMOClassifierBuilder implements ClassifierBuilder  {
     private MessageInstanceConverter instanceConverter;
 
 
-    public void buildAndEvaluate(int numberOfWords) throws Exception {
+    public void build(int numberOfWords) throws Exception {
         NewsgroupScenario scenario = scenarioInstance.get();
 
         BagOfWords bagOfWords = new BagOfWords(numberOfWords);
