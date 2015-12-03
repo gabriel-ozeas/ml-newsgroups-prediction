@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
  * Created by gabriel on 28/10/15.
  */
 //@RunWith(CdiRunner.class)
-//@AdditionalClasses({DefaultProducer.class})
+//@AdditionalClasses({ConfigurationsProducer.class})
     @Ignore
 public class MessageDataCleanerTest {
     private Message message;

@@ -23,13 +23,24 @@ import static java.util.stream.Collectors.toList;
 /**
  * Created by gabriel on 01/11/15.
  */
-public class DefaultProducer {
+@ApplicationScoped
+public class ConfigurationsProducer {
     @Inject
     private MessageReader messageReader;
     @Inject
     private GroupReader groupReader;
     @Inject
     private MessageDataCleaner cleaner;
+
+    private String datasetDir;
+
+    public void setDatasetDir(String datasetDir) {
+        this.datasetDir = datasetDir;
+    }
+
+    public String datasetUrl() {
+        return "http://qwone.com/~jason/20Newsgroups/20news-19997.tar.gz";
+    }
 
     @Produces
     private NewsgroupScenario scenario(List<Group> groups, List<Message> messages) {
@@ -38,7 +49,7 @@ public class DefaultProducer {
 
     @Produces
     private List<Group> groups() {
-        return groupReader.groups("20_newsgroups");
+        return groupReader.groups(datasetDir);
     }
 
     @Produces

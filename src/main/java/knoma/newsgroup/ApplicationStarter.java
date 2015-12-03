@@ -1,6 +1,7 @@
 package knoma.newsgroup;
 
 import knoma.newsgroup.experiments.RunnableExperiment;
+import knoma.newsgroup.util.CompressionUtil;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,6 +13,7 @@ import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,20 +33,41 @@ public class ApplicationStarter {
     @Inject
     private Options cliOptions;
 
+    @Inject
+    private ConfigurationsProducer configurations;
+    
+    @Inject
+    private DatasetDownloader downloader;
+    
+    private CompressionUtil compressionUtil;
+
     public void bootListener(@Observes ContainerInitialized event, @Parameters List<String> cmdLineArgs) throws Exception {
         CommandLineParser parser = new DefaultParser();
         CommandLine commandLine = parser.parse(cliOptions, cmdLineArgs.toArray(new String[cmdLineArgs.size()]));
 
-        if (commandLine.hasOption("-help")) {
+        if (commandLine.hasOption("--help") || !(commandLine.hasOption("dataset-dir") || commandLine.hasOption("download-dataset"))) {
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp( "20newsgroup", cliOptions);
             return;
+        }
+        
+        if (commandLine.hasOption("dataset-dir")) {
+            logger.info("Using dataset in {} dir", commandLine.getOptionValue("dataset-dir"));
+            configurations.setDatasetDir(commandLine.getOptionValue("dataset-dir"));
+        }
+        
+        if (commandLine.hasOption("download-dataset")) {
+            logger.info("Downloading 20newsgroup dataset...");
+            String datasetFile = downloader.download(configurations.datasetUrl());
+            logger.info("Extracting dataset {}", datasetFile);
+            File uncompressedDir = compressionUtil.untar(new File(datasetFile), new File(new File(datasetFile).getParent()));
+            configurations.setDatasetDir(uncompressedDir.getAbsolutePath());
         }
 
         if (!commandLine.hasOption("experiment")) {
             HelpFormatter formatter = new HelpFormatter();
             formatter.setWidth(130);
-            formatter.printHelp( "20newsgroup -experiment find-best-number-of-attributes", cliOptions);
+            formatter.printHelp( "20newsgroup [Options]", cliOptions);
             return;
         }
 

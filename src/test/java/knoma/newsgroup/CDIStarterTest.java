@@ -11,7 +11,7 @@ import org.junit.Test;
 public class CDIStarterTest {
     @Test
     public void testName() throws Exception {
-        StartMain.main(new String[]{"-help"});
+        StartMain.main(new String[]{""});
         while(true){Thread.sleep(1000);}
     }
 }

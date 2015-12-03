@@ -1,5 +1,6 @@
 package knoma.newsgroup.util;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -7,6 +8,7 @@ import java.io.File;
 /**
  * Created by gabriel on 12/3/15.
  */
+@Ignore
 public class CompressionUtilTest {
     @Test
     public void unzipWithSuccess() throws Exception {

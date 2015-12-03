@@ -24,9 +24,15 @@ public class OptionsProducer {
     @ApplicationScoped
     public Options commandLineInterfaceOptions() {
         Options options = new Options();
+
         options.addOption(builder()
-                .longOpt("dataset")
-                .desc("Specify the 20 newsgroup dataset path")
+                .longOpt("download-dataset")
+                .desc("This option will download the dataset from internet")
+                .build());
+
+        options.addOption(builder()
+                .longOpt("dataset-dir")
+                .desc("Set the dataset directory path")
                 .build());
 
         options.addOption(builder()
