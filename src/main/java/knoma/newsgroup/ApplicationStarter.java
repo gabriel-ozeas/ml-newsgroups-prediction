@@ -1,6 +1,7 @@
 package knoma.newsgroup;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -48,6 +49,7 @@ public class ApplicationStarter {
 
         if (!commandLine.hasOption("experiment")) {
             HelpFormatter formatter = new HelpFormatter();
+            formatter.setWidth(130);
             formatter.printHelp( "20newsgroup -experiment find-best-number-of-attributes", cliOptions);
             return;
         }
@@ -56,6 +58,14 @@ public class ApplicationStarter {
         if (runnableExperiment == null) {
             logger.info("No experiment found with name " + commandLine.getOptionValue("experiment"));
         }
-        runnableExperiment.run();
+
+        HashMap<String, String> configuration = new HashMap<>();
+
+        Option[] options = commandLine.getOptions();
+        for (Option option : options) {
+            configuration.put(option.getArgName(), option.getValue());
+        }
+
+        runnableExperiment.run(configuration);
     }
 }

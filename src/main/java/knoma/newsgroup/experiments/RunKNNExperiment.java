@@ -1,31 +1,26 @@
 package knoma.newsgroup.experiments;
 
-import knoma.newsgroup.classifiers.ClassifierBuilder;
-
-import javax.enterprise.inject.Any;
-import javax.enterprise.inject.Instance;
-import javax.inject.Inject;
-
-import static knoma.newsgroup.classifiers.ClassifierLiteral.classifierType;
+import knoma.newsgroup.domain.ExecutionContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import weka.classifiers.Classifier;
+import weka.classifiers.lazy.IBk;
 
 /**
  * Created by gabriel on 29/11/15.
  */
-@Experiment("run-knn")
-public class RunKNNExperiment implements RunnableExperiment {
-    @Inject
-    @Any
-    private Instance<ClassifierBuilder> classifierBuilder;
+@Experiment(name = "knn", description = "This experiment create a classifier using knn algorithm. You can use the parameters -number-of-words to specify how many words " +
+        "will be used in the vocabulary. -tranning-size specifies the percentage of instances that will be used in tranning.")
+public class RunKNNExperiment extends DefaultClassifierExperiment implements RunnableExperiment {
+    private static final Logger logger = LogManager.getLogger(RunKNNExperiment.class.getName());
 
+    protected Classifier tranning(ExecutionContext context) throws Exception {
+        IBk classifier = (IBk) super.tranning(context);
+        logger.info("K number founded by weka: {}", classifier.getKNN());
+        return classifier;
+    }
     @Override
-    public void run() {
-        ClassifierBuilder builder = classifierBuilder
-                .select(classifierType("knn"))
-                .get();
-        try {
-            builder.build(2500);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    protected String getClassifierName() {
+        return "knn";
     }
 }

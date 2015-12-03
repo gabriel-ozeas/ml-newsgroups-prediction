@@ -23,8 +23,8 @@ dependencies {
     compile group: 'commons-cli', name: 'commons-cli', version: '1.3.1'
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
-    testCompile(group: 'org.jglue.cdi-unit', name: 'cdi-unit', version: '3.1.3') {
-        exclude group: 'org.reflections', module: 'reflections'
-    }
+    //testCompile(group: 'org.jglue.cdi-unit', name: 'cdi-unit', version: '3.1.3') {
+       // exclude group: 'org.reflections', module: 'reflections'
+   // }
     testCompile group: 'org.reflections', name: 'reflections', version:'0.9.10'
 }

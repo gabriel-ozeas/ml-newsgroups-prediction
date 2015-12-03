@@ -1,6 +1,5 @@
 package knoma.newsgroup.classifiers;
 
-import weka.classifiers.*;
 import weka.core.Instances;
 
 /**

@@ -17,7 +17,12 @@ public class ExperimentLiteral extends AnnotationLiteral<Experiment> implements 
     }
 
     @Override
-    public String value() {
+    public String name() {
         return value;
+    }
+
+    @Override
+    public String description() {
+        return null;
     }
 }
