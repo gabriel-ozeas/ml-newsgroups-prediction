@@ -1,6 +1,7 @@
 package knoma.newsgroup.util;
 
 import knoma.newsgroup.DatasetDownloader;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -8,6 +9,7 @@ import org.junit.Test;
  */
 public class DatasetDownloaderTest {
     @Test
+    @Ignore
     public void downloadingWithSuccess() throws Exception {
         new DatasetDownloader().download("http://qwone.com/~jason/20Newsgroups/20news-19997.tar.gz");
     }
