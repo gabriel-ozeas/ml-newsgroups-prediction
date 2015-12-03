@@ -1,8 +1,6 @@
 package knoma.newsgroup.preprocessing;
 
 import knoma.newsgroup.domain.ExecutionContext;
-import knoma.newsgroup.domain.Group;
-import knoma.newsgroup.domain.Message;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import weka.core.FastVector;

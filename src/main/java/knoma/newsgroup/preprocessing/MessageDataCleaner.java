@@ -1,7 +1,7 @@
 package knoma.newsgroup.preprocessing;
 
-import knoma.newsgroup.domain.Message;
 import knoma.newsgroup.StopWords;
+import knoma.newsgroup.domain.Message;
 import knoma.newsgroup.domain.TokenizedMessage;
 import weka.core.stemmers.LovinsStemmer;
 

@@ -4,15 +4,15 @@ package knoma.newsgroup.preprocessing;
 import knoma.newsgroup.domain.Group;
 import knoma.newsgroup.domain.Message;
 
-import java.io.File;
-import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static java.nio.file.Files.lines;

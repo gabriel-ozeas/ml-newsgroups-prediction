@@ -3,6 +3,7 @@ package knoma.newsgroup;
 import knoma.newsgroup.domain.Message;
 import knoma.newsgroup.preprocessing.MessageParser;
 import org.junit.Test;
+
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import static java.nio.file.Files.readAllLines;
 import static java.nio.file.Paths.get;

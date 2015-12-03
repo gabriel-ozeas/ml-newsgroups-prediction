@@ -6,8 +6,8 @@ import knoma.newsgroup.domain.Message;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;

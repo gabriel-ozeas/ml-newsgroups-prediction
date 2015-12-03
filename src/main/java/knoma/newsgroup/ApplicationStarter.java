@@ -1,11 +1,5 @@
 package knoma.newsgroup;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.stream.IntStream;
-
-import knoma.newsgroup.classifiers.ClassifierBuilder;
 import knoma.newsgroup.experiments.RunnableExperiment;
 import org.apache.commons.cli.*;
 import org.apache.logging.log4j.LogManager;
@@ -13,14 +7,14 @@ import org.apache.logging.log4j.Logger;
 import org.jboss.weld.environment.se.bindings.Parameters;
 import org.jboss.weld.environment.se.events.ContainerInitialized;
 
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+import java.util.HashMap;
+import java.util.List;
 
-import static knoma.newsgroup.classifiers.ClassifierLiteral.classifierType;
 import static knoma.newsgroup.experiments.ExperimentLiteral.experimentType;
 
 /**

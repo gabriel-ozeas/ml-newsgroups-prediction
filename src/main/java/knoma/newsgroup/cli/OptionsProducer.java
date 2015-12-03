@@ -2,8 +2,6 @@ package knoma.newsgroup.cli;
 
 import knoma.newsgroup.experiments.Experiment;
 import knoma.newsgroup.experiments.RunnableExperiment;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 
 import javax.enterprise.context.ApplicationScoped;
