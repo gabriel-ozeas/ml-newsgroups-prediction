@@ -43,7 +43,7 @@ Print this message
 
 This experiment create a classifier using knn algorithm. You can use the parameters -number-of-words to specify how many words will be used in the vocabulary. -tranning-size specifies the percentage of instances that will be used in tranning.
 
-`-naive-bayes-experiment`
+`--naive-bayes-experiment`
 
 This experiment create a classifier using naive-bayes algorithm. You can use the parameters -number-of-words to specify how many words will be used in the
 vocabulary. -tranning-size specifies the percentage of instances that will be used in tranning.
