@@ -21,7 +21,10 @@ dependencies {
     compile group: 'org.jboss.weld.se', name: 'weld-se-core', version: '2.3.1.Final'
     compile group: 'nz.ac.waikato.cms.weka', name: 'weka-stable', version: '3.6.13'
     compile group: 'commons-cli', name: 'commons-cli', version: '1.3.1'
+    compile group: 'commons-codec', name: 'commons-codec', version: '1.10'
     compile group: 'org.apache.commons', name: 'commons-compress', version: '1.10'
+
+
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
     //testCompile(group: 'org.jglue.cdi-unit', name: 'cdi-unit', version: '3.1.3') {

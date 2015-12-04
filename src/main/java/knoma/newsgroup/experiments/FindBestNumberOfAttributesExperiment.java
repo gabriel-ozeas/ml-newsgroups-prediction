@@ -65,7 +65,8 @@ public class FindBestNumberOfAttributesExperiment implements RunnableExperiment 
                 .messages(scenario.getMessages())
                 .size(i).build();
 
-        FastVector attributes = attributeVectorExtractor.extract(bagOfWords, scenario.getGroups());
+        FastVector categories = attributeVectorExtractor.extractCategoryAttribute(scenario.getGroups());
+        FastVector attributes = attributeVectorExtractor.extract(bagOfWords, categories);
 
         logger.info("Converting messages to weka instances...");
         List<weka.core.Instance> instances = instanceConverter.convert(scenario.getMessages(), bagOfWords, attributes);

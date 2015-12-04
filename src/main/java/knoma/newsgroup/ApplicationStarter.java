@@ -17,6 +17,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
+import static java.lang.System.getProperty;
 import static knoma.newsgroup.experiments.ExperimentLiteral.experimentType;
 
 /**
@@ -38,7 +39,8 @@ public class ApplicationStarter {
     
     @Inject
     private DatasetDownloader downloader;
-    
+
+    @Inject
     private CompressionUtil compressionUtil;
 
     public void bootListener(@Observes ContainerInitialized event, @Parameters List<String> cmdLineArgs) throws Exception {
@@ -46,8 +48,7 @@ public class ApplicationStarter {
         CommandLine commandLine = parser.parse(cliOptions, cmdLineArgs.toArray(new String[cmdLineArgs.size()]));
 
         if (commandLine.hasOption("--help") || !(commandLine.hasOption("dataset-dir") || commandLine.hasOption("download-dataset"))) {
-            HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp( "20newsgroup", cliOptions);
+            printHelp();
             return;
         }
         
@@ -57,32 +58,49 @@ public class ApplicationStarter {
         }
         
         if (commandLine.hasOption("download-dataset")) {
-            logger.info("Downloading 20newsgroup dataset...");
-            String datasetFile = downloader.download(configurations.datasetUrl());
+            String datasetFile = downloader.download(configurations.datasetUrl(), "20news-19997.tar.gz", getProperty("java.io.tmpdir"), false);
             logger.info("Extracting dataset {}", datasetFile);
             File uncompressedDir = compressionUtil.untar(new File(datasetFile), new File(new File(datasetFile).getParent()));
             configurations.setDatasetDir(uncompressedDir.getAbsolutePath());
         }
 
-        if (!commandLine.hasOption("experiment")) {
-            HelpFormatter formatter = new HelpFormatter();
-            formatter.setWidth(130);
-            formatter.printHelp( "20newsgroup [Options]", cliOptions);
-            return;
-        }
-
-        RunnableExperiment runnableExperiment = experiments.select(experimentType(commandLine.getOptionValue("experiment"))).get();
-        if (runnableExperiment == null) {
-            logger.info("No experiment found with name " + commandLine.getOptionValue("experiment"));
-        }
+        String stopwordsFile = downloader.download(configurations.stopWordsUrl(), "common-english-words.txt", getProperty("java.io.tmpdir"), true);
+        configurations.setStopWordsFile(stopwordsFile);
 
         HashMap<String, String> configuration = new HashMap<>();
 
         Option[] options = commandLine.getOptions();
         for (Option option : options) {
-            configuration.put(option.getArgName(), option.getValue());
+            configuration.put(option.getLongOpt(), option.getValue());
         }
 
+        String experiment = configuration.keySet()
+                .stream()
+                .filter(parameter -> parameter.endsWith("-experiment"))
+                .findFirst()
+                .map(parameter -> parameter.replace("-experiment", ""))
+                .orElse(null);
+
+        if (experiment == null) {
+            logger.error("Cannot find experiment");
+            printHelp();
+            return;
+        }
+
+        RunnableExperiment runnableExperiment = experiments.select(experimentType(experiment)).get();
+        if (runnableExperiment == null) {
+            logger.info("No experiment found with name {}", experiment);
+            printHelp();
+            return;
+        }
+
+
         runnableExperiment.run(configuration);
+    }
+
+    private void printHelp() {
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.setWidth(130);
+        formatter.printHelp("20newsgroup [Options]", cliOptions);
     }
 }

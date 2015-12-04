@@ -11,6 +11,6 @@ import java.lang.annotation.RetentionPolicy;
 @Qualifier
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Experiment {
-    String name();
-    @Nonbinding String description();
+    String name() default "";
+    @Nonbinding String description() default "";
 }

@@ -25,6 +25,7 @@ public class GroupReader {
                     .filter(path -> !path.toFile().getName().equals(dir))
                     .map(path -> path.toFile())
                     .filter(file -> file.isDirectory())
+                    .filter(file -> !file.getName().equals("20_newsgroups"))
                     .map(file -> new Group(file.getName(), file.getAbsolutePath()))
                     .collect(toList());
         } catch (IOException e) {

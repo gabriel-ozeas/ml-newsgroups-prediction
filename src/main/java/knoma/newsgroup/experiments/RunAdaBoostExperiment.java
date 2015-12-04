@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 /**
  * Created by gabriel on 29/11/15.
  */
-@Experiment(name = "adaboost-with-naivebayes-multinomial",
+@Experiment(name = "adaboost-multinomial",
         description = "This experiment create a classifier using AdaBoost algorithm " +
                 "with Naive Bayes Multinomial. You can use the parameters -number-of-words to specify how many words " +
                 "will be used in the vocabulary. -tranning-size specifies the percentage of instances that will be used in tranning.")

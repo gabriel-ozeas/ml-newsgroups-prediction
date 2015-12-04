@@ -6,6 +6,7 @@ import knoma.newsgroup.domain.TokenizedMessage;
 import weka.core.stemmers.LovinsStemmer;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class MessageDataCleaner {
                     + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
     @Inject @StopWords
-    private List<String> stopwords;
+    private Instance<List<String>> stopwords;
 
     public Message clean(Message message) {
         String text = message.getMessage()
@@ -34,7 +35,7 @@ public class MessageDataCleaner {
                 .replaceAll("[_0-9]+", " ")
                 .replaceAll(" [a-z] ", " ");
 
-        text = stopwords.stream().reduce(text, (t, word) -> t.replace(" " + word + " ", " "));
+        text = stopwords.get().stream().reduce(text, (t, word) -> t.replace(" " + word + " ", " "));
 
         LovinsStemmer stemmer = new LovinsStemmer();
 
@@ -46,13 +47,5 @@ public class MessageDataCleaner {
                 .collect(toList());
 
         return new TokenizedMessage(tokens, message);
-    }
-
-    public List<String> getStopwords() {
-        return stopwords;
-    }
-
-    public void setStopwords(List<String> stopwords) {
-        this.stopwords = stopwords;
     }
 }

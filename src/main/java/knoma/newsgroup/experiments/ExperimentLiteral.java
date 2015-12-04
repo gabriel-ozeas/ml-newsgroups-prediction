@@ -23,6 +23,6 @@ public class ExperimentLiteral extends AnnotationLiteral<Experiment> implements 
 
     @Override
     public String description() {
-        return null;
+        return "";
     }
 }

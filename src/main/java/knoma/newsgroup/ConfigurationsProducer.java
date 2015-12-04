@@ -33,14 +33,18 @@ public class ConfigurationsProducer {
     private MessageDataCleaner cleaner;
 
     private String datasetDir;
+    private String stopWordsFile;
 
     public void setDatasetDir(String datasetDir) {
         this.datasetDir = datasetDir;
     }
+    public void setStopWordsFile(String file) {this.stopWordsFile = file; }
 
     public String datasetUrl() {
         return "http://qwone.com/~jason/20Newsgroups/20news-19997.tar.gz";
     }
+
+    public String stopWordsUrl() {return "http://www.textfixer.com/resources/common-english-words.txt"; }
 
     @Produces
     private NewsgroupScenario scenario(List<Group> groups, List<Message> messages) {
@@ -68,11 +72,10 @@ public class ConfigurationsProducer {
     }
 
     @Produces
-    @ApplicationScoped
     @StopWords
     public List<String> stopWords() {
         try {
-            List<String> lines = readAllLines(get("src/main/resources/stopwords.txt"));
+            List<String> lines = readAllLines(get(stopWordsFile));
             return Arrays.asList(lines.get(0).split(","));
         } catch (IOException e) {
             throw new RuntimeException("Cannot list stop words.", e);

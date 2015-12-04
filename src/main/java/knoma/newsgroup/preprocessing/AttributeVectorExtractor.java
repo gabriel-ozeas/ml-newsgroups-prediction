@@ -13,13 +13,19 @@ import java.util.List;
  */
 @ApplicationScoped
 public class AttributeVectorExtractor {
-    public FastVector extract(BagOfWords bagOfWords, List<Group> groups){
-        final FastVector vector = new FastVector();
 
+    public FastVector extractCategoryAttribute(List<Group> groups) {
         FastVector categoryVector = new FastVector(20);
         groups.stream().forEach(group -> categoryVector.addElement(group.getName()));
 
-        Attribute newsgroup = new Attribute("@@class@@", categoryVector);
+        return categoryVector;
+    }
+
+
+    public FastVector extract(BagOfWords bagOfWords, FastVector groups){
+        final FastVector vector = new FastVector();
+
+        Attribute newsgroup = new Attribute("@@class@@", groups);
         vector.addElement(newsgroup);
 
         bagOfWords

@@ -21,7 +21,7 @@ public class MessageInstanceConverter {
 
     public List<Instance> convert(List<Message> messages, BagOfWords bagOfWords, FastVector categoryVector) {
         return messages
-                .stream()
+                .parallelStream()
                 .map(message -> convert(message, bagOfWords, categoryVector))
                 .filter(instance -> instance != null)
                 .collect(toList());

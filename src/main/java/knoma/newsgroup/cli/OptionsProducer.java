@@ -43,7 +43,7 @@ public class OptionsProducer {
         experiments.forEach(experiment -> {
             Experiment annotation = experiment.getClass().getAnnotation(Experiment.class);
 
-            options.addOption(builder().longOpt(annotation.name())
+            options.addOption(builder().longOpt(annotation.name() + "-experiment")
                     .desc(annotation.description())
                     .build());
 
