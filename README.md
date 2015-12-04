@@ -58,4 +58,4 @@ This experiment create a classifier using naive-bayes multinomial algorithm. You
 
 ## How to build?
 
-To build and package the distribution just `execute ./gradlew clean build distZip`. It will generate a zip file in build/distribution directory. 
+To build and package the distribution just execute `./gradlew clean build distZip`. It will generate a zip file in build/distribution directory. 
