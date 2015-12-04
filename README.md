@@ -1,5 +1,5 @@
 # ml-newsgroups-prediction
-Some machine learning algorithm for predict the famous 20 news groups dataset
+Some machine learning algorithm for predict the 20 news groups dataset. It uses the Weka API to generate classifiers and display some statistics, the confustion matrix and the ROC curve for some experiments.
 
 ## How to execute experiments?
 
